@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.sunshine.shiro.redis.autoconfigure.ShiroRedisAutoConfiguration
