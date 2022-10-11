@@ -5,7 +5,6 @@ import com.sunshine.shiro.redis.autoconfigure.lettuce.LettuceRedisConfiguration;
 import org.crazycake.shiro.IRedisManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.crazycake.shiro.serializer.ProtostuffSerializer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,7 +42,6 @@ class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
         redisSessionDAO.setExpire((int) session.getExpire().getSeconds());
         redisSessionDAO.setSessionInMemoryEnabled(session.getSessionInMemoryEnabled());
         redisSessionDAO.setSessionInMemoryTimeout(session.getSessionInMemoryTimeout().toMillis());
-        redisSessionDAO.setValueSerializer(new ProtostuffSerializer());
         return redisSessionDAO;
     }
 
@@ -60,7 +58,6 @@ class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
             redisCacheManager.setKeyPrefix(cache.getKeyPrefix() + redisCacheManager.getKeyPrefix());
         }
         redisCacheManager.setExpire((int) cache.getExpire().getSeconds());
-        redisCacheManager.setValueSerializer(new ProtostuffSerializer());
         return redisCacheManager;
     }
 }
