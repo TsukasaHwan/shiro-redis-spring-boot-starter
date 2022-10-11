@@ -443,6 +443,11 @@ public class ShiroRedisProperties {
 
     public static class Session {
         /**
+         * 是否启用Redis Session
+         */
+        private Boolean enable = Boolean.TRUE;
+
+        /**
          * 会话缓存前缀
          */
         private String keyPrefix;
@@ -461,6 +466,14 @@ public class ShiroRedisProperties {
          * session在ThreadLocal中的过期时间
          */
         private Duration sessionInMemoryTimeout = Duration.ofMillis(1000L);
+
+        public Boolean getEnable() {
+            return enable;
+        }
+
+        public void setEnable(Boolean enable) {
+            this.enable = enable;
+        }
 
         public String getKeyPrefix() {
             return keyPrefix;

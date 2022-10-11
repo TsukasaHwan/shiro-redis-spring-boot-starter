@@ -32,6 +32,7 @@ class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(RedisSessionDAO.class)
+    @ConditionalOnProperty(value = "shiro.redis.session.enable", havingValue = "true", matchIfMissing = true)
     RedisSessionDAO redisSessionDAO(IRedisManager redisManager) {
         ShiroRedisProperties.Session session = getProperties().getSession();
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
