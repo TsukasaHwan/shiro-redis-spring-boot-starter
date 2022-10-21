@@ -5,10 +5,8 @@ import com.sunshine.shiro.redis.autoconfigure.ShiroRedisProperties;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.ReadFrom;
 import io.lettuce.core.SocketOptions;
-import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
-import io.lettuce.core.masterreplica.StatefulRedisMasterReplicaConnection;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
 import org.crazycake.shiro.lettuce.manager.LettuceRedisClusterManager;
@@ -61,7 +59,7 @@ abstract class LettuceConfiguration extends ShiroRedisConfiguration {
         lettuceRedisSentinelManager.setDatabase(getProperties().getDatabase());
         lettuceRedisSentinelManager.setCount(getProperties().getCount());
         mapper.from(sentinel.getReadFromType()).whenNonNull().as(readFromType -> ReadFrom.valueOf(readFromType.name())).to(lettuceRedisSentinelManager::setReadFrom);
-        lettuceRedisSentinelManager.setGenericObjectPoolConfig((GenericObjectPoolConfig<StatefulRedisMasterReplicaConnection<byte[], byte[]>>) getPoolConfig());
+        lettuceRedisSentinelManager.setGenericObjectPoolConfig(getPoolConfig());
         return lettuceRedisSentinelManager;
     }
 
@@ -103,7 +101,7 @@ abstract class LettuceConfiguration extends ShiroRedisConfiguration {
         mapper.from(getProperties().getLettuce().getAsync()).whenNonNull().to(lettuceRedisManager::setIsAsync);
         lettuceRedisManager.setDatabase(getProperties().getDatabase());
         lettuceRedisManager.setCount(getProperties().getCount());
-        lettuceRedisManager.setGenericObjectPoolConfig((GenericObjectPoolConfig<StatefulRedisConnection<byte[], byte[]>>) getPoolConfig());
+        lettuceRedisManager.setGenericObjectPoolConfig(getPoolConfig());
         return lettuceRedisManager;
     }
 
