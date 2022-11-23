@@ -24,11 +24,8 @@ public abstract class ShiroRedisConfiguration {
      * @return 完整配置的连接池配置
      */
     protected GenericObjectPoolConfig<?> getPoolConfig() {
-        ShiroRedisProperties.Pool jedisPool = getProperties().getJedis().getPool();
-        if (jedisPool != null) {
-            return getJedisPool();
-        }
-        return getPool();
+        ShiroRedisProperties.ClientType clientType = getProperties().getClientType();
+        return ShiroRedisProperties.ClientType.JEDIS.equals(clientType) ? getJedisPool() : getPool();
     }
 
     private JedisPoolConfig getJedisPool() {
