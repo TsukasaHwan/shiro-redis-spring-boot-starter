@@ -6,7 +6,7 @@
 
     <groupId>com.sunshine</groupId>
     <artifactId>shiro-redis-spring-boot-starter</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <repositories>
         <repository>
@@ -20,7 +20,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.7.2</version>
+                <version>2.7.7</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -52,12 +52,12 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring-boot-web-starter</artifactId>
-            <version>1.9.1</version>
+            <version>1.11.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.TsukasaHwan</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>3.3.9</version>
+            <version>3.4.0</version>
         </dependency>
     </dependencies>
 
