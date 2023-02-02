@@ -6,7 +6,7 @@
 
     <groupId>com.sunshine</groupId>
     <artifactId>shiro-redis-spring-boot-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 
     <repositories>
         <repository>
@@ -57,7 +57,20 @@
         <dependency>
             <groupId>com.github.TsukasaHwan</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>3.4.0</version>
+            <version>3.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.3.1</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

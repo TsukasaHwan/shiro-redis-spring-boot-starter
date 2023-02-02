@@ -2,12 +2,14 @@ package com.sunshine.shiro.redis.autoconfigure.jedis;
 
 import com.sunshine.shiro.redis.autoconfigure.ShiroRedisConfiguration;
 import com.sunshine.shiro.redis.autoconfigure.ShiroRedisProperties;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
 import org.crazycake.shiro.jedis.manager.RedisClusterManager;
 import org.crazycake.shiro.jedis.manager.RedisManager;
 import org.crazycake.shiro.jedis.manager.RedisSentinelManager;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.Connection;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
@@ -57,6 +59,7 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
      *
      * @return 完整配置的JedisRedisClusterManager
      */
+    @SuppressWarnings("unchecked")
     protected RedisClusterManager getJedisRedisClusterManager() {
         PropertyMapper mapper = PropertyMapper.get();
         ShiroRedisProperties.Cluster cluster = getProperties().getCluster();
@@ -68,7 +71,7 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
         redisClusterManager.setDatabase(getProperties().getDatabase());
         redisClusterManager.setCount(getProperties().getCount());
         mapper.from(cluster.getMaxRedirects()).whenNonNull().to(redisClusterManager::setMaxAttempts);
-        redisClusterManager.setJedisPoolConfig((JedisPoolConfig) getPoolConfig());
+        redisClusterManager.setGenericObjectPoolConfig((GenericObjectPoolConfig<Connection>) getPoolConfig());
         return redisClusterManager;
     }
 

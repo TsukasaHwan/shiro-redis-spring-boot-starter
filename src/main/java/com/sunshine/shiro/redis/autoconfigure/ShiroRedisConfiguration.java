@@ -1,6 +1,7 @@
 package com.sunshine.shiro.redis.autoconfigure;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import redis.clients.jedis.Connection;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -28,8 +29,13 @@ public abstract class ShiroRedisConfiguration {
         return ShiroRedisProperties.ClientType.JEDIS.equals(clientType) ? getJedisPool() : getPool();
     }
 
-    private JedisPoolConfig getJedisPool() {
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
+    private GenericObjectPoolConfig<?> getJedisPool() {
+        GenericObjectPoolConfig<?> poolConfig;
+        if (getProperties().getCluster() != null) {
+            poolConfig = new GenericObjectPoolConfig<Connection>();
+        } else {
+            poolConfig = new JedisPoolConfig();
+        }
         applyPoolProperties(poolConfig, getProperties().getJedis().getPool());
         return poolConfig;
     }
