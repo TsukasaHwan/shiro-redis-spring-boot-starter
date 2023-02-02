@@ -217,7 +217,7 @@ public class ShiroRedisProperties {
         LETTUCE,
 
         /**
-         * 使用Jedis客服端
+         * 使用Jedis客户端
          */
         JEDIS
 
