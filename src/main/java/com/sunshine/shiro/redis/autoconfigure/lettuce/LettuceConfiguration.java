@@ -124,4 +124,10 @@ abstract class LettuceConfiguration extends ShiroRedisConfiguration {
         }
         return clusterClientOptions;
     }
+
+    private GenericObjectPoolConfig<?> getPoolConfig() {
+        GenericObjectPoolConfig<?> genericObjectPoolConfig = new GenericObjectPoolConfig<>();
+        applyPoolProperties(genericObjectPoolConfig, getProperties().getLettuce().getPool());
+        return genericObjectPoolConfig;
+    }
 }

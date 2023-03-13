@@ -9,17 +9,18 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author Teamo
  * @since 2022/09/27
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({GenericObjectPool.class, Jedis.class})
+@ConditionalOnClass({GenericObjectPool.class, Jedis.class, JedisPoolConfig.class})
 @ConditionalOnProperty(name = "shiro.redis.client-type", havingValue = "jedis", matchIfMissing = true)
 public class JedisRedisConfiguration extends JedisConfiguration {
 
-    protected JedisRedisConfiguration(ShiroRedisProperties shiroRedisProperties) {
+    public JedisRedisConfiguration(ShiroRedisProperties shiroRedisProperties) {
         super(shiroRedisProperties);
     }
 

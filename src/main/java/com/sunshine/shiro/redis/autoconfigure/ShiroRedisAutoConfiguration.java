@@ -2,6 +2,7 @@ package com.sunshine.shiro.redis.autoconfigure;
 
 import com.sunshine.shiro.redis.autoconfigure.jedis.JedisRedisConfiguration;
 import com.sunshine.shiro.redis.autoconfigure.lettuce.LettuceRedisConfiguration;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -21,11 +22,11 @@ import org.springframework.util.StringUtils;
 @AutoConfiguration
 @EnableConfigurationProperties(value = {ShiroRedisProperties.class})
 @ConditionalOnProperty(value = "shiro.redis.enable", havingValue = "true", matchIfMissing = true)
-@ConditionalOnClass(value = {RedisSessionDAO.class, RedisCacheManager.class})
+@ConditionalOnClass(value = {RedisSessionDAO.class, RedisCacheManager.class, GenericObjectPoolConfig.class})
 @Import({LettuceRedisConfiguration.class, JedisRedisConfiguration.class})
-class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
+public class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
 
-    ShiroRedisAutoConfiguration(ShiroRedisProperties shiroRedisProperties) {
+    public ShiroRedisAutoConfiguration(ShiroRedisProperties shiroRedisProperties) {
         super(shiroRedisProperties);
     }
 
@@ -47,7 +48,7 @@ class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(RedisCacheManager.class)
-    RedisCacheManager redisCacheManager(IRedisManager redisManager) {
+    RedisCacheManager shiroRedisCacheManager(IRedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager);
         ShiroRedisProperties.Cache cache = getProperties().getCache();

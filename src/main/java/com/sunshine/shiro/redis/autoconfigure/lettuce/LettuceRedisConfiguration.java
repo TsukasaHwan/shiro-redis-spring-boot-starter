@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(name = "shiro.redis.client-type", havingValue = "lettuce", matchIfMissing = true)
 public class LettuceRedisConfiguration extends LettuceConfiguration {
 
-    protected LettuceRedisConfiguration(ShiroRedisProperties shiroRedisProperties) {
+    public LettuceRedisConfiguration(ShiroRedisProperties shiroRedisProperties) {
         super(shiroRedisProperties);
     }
 

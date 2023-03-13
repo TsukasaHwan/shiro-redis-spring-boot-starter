@@ -92,4 +92,15 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
         redisManager.setJedisPoolConfig((JedisPoolConfig) getPoolConfig());
         return redisManager;
     }
+
+    private GenericObjectPoolConfig<?> getPoolConfig() {
+        GenericObjectPoolConfig<?> poolConfig;
+        if (getProperties().getCluster() != null) {
+            poolConfig = new GenericObjectPoolConfig<Connection>();
+        } else {
+            poolConfig = new JedisPoolConfig();
+        }
+        applyPoolProperties(poolConfig, getProperties().getJedis().getPool());
+        return poolConfig;
+    }
 }
