@@ -2,14 +2,12 @@ package com.sunshine.shiro.redis.autoconfigure.jedis;
 
 import com.sunshine.shiro.redis.autoconfigure.ShiroRedisConfiguration;
 import com.sunshine.shiro.redis.autoconfigure.ShiroRedisProperties;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
-import org.crazycake.shiro.jedis.manager.RedisClusterManager;
-import org.crazycake.shiro.jedis.manager.RedisManager;
-import org.crazycake.shiro.jedis.manager.RedisSentinelManager;
+import org.crazycake.shiro.RedisClusterManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSentinelManager;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.StringUtils;
-import redis.clients.jedis.Connection;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
@@ -50,7 +48,7 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
         mapper.from(sentinel.getPassword()).whenHasText().to(redisSentinelManager::setPassword);
         redisSentinelManager.setDatabase(getProperties().getDatabase());
         redisSentinelManager.setCount(getProperties().getCount());
-        redisSentinelManager.setJedisPoolConfig((JedisPoolConfig) getPoolConfig());
+        redisSentinelManager.setJedisPoolConfig(getPoolConfig());
         return redisSentinelManager;
     }
 
@@ -59,7 +57,6 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
      *
      * @return 完整配置的JedisRedisClusterManager
      */
-    @SuppressWarnings("unchecked")
     protected RedisClusterManager getJedisRedisClusterManager() {
         PropertyMapper mapper = PropertyMapper.get();
         ShiroRedisProperties.Cluster cluster = getProperties().getCluster();
@@ -71,7 +68,7 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
         redisClusterManager.setDatabase(getProperties().getDatabase());
         redisClusterManager.setCount(getProperties().getCount());
         mapper.from(cluster.getMaxRedirects()).whenNonNull().to(redisClusterManager::setMaxAttempts);
-        redisClusterManager.setGenericObjectPoolConfig((GenericObjectPoolConfig<Connection>) getPoolConfig());
+        redisClusterManager.setJedisPoolConfig(getPoolConfig());
         return redisClusterManager;
     }
 
@@ -89,17 +86,12 @@ abstract class JedisConfiguration extends ShiroRedisConfiguration {
         mapper.from(getProperties().getPassword()).whenHasText().to(redisManager::setPassword);
         redisManager.setDatabase(getProperties().getDatabase());
         redisManager.setCount(getProperties().getCount());
-        redisManager.setJedisPoolConfig((JedisPoolConfig) getPoolConfig());
+        redisManager.setJedisPoolConfig(getPoolConfig());
         return redisManager;
     }
 
-    private GenericObjectPoolConfig<?> getPoolConfig() {
-        GenericObjectPoolConfig<?> poolConfig;
-        if (getProperties().getCluster() != null) {
-            poolConfig = new GenericObjectPoolConfig<Connection>();
-        } else {
-            poolConfig = new JedisPoolConfig();
-        }
+    private JedisPoolConfig getPoolConfig() {
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
         applyPoolProperties(poolConfig, getProperties().getJedis().getPool());
         return poolConfig;
     }

@@ -6,14 +6,11 @@
 
     <groupId>com.sunshine</groupId>
     <artifactId>shiro-redis-spring-boot-starter</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://www.jitpack.io</url>
-        </repository>
-    </repositories>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -26,7 +23,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
     <dependencies>
         <!-- Spring -->
@@ -55,15 +51,14 @@
             <version>1.11.0</version>
         </dependency>
         <dependency>
-            <groupId>com.github.TsukasaHwan</groupId>
+            <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>3.4.1</version>
+            <version>3.3.2</version>
         </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.3.1</version>
             <optional>true</optional>
         </dependency>
 

@@ -5,13 +5,13 @@ import com.sunshine.shiro.redis.autoconfigure.ShiroRedisProperties;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.ReadFrom;
 import io.lettuce.core.SocketOptions;
+import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.cluster.ClusterClientOptions;
-import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
-import org.crazycake.shiro.lettuce.manager.LettuceRedisClusterManager;
-import org.crazycake.shiro.lettuce.manager.LettuceRedisManager;
-import org.crazycake.shiro.lettuce.manager.LettuceRedisSentinelManager;
+import org.crazycake.shiro.LettuceRedisClusterManager;
+import org.crazycake.shiro.LettuceRedisManager;
+import org.crazycake.shiro.LettuceRedisSentinelManager;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
@@ -20,7 +20,6 @@ import java.time.Duration;
  * @author Teamo
  * @since 2022/09/23
  */
-@SuppressWarnings("unchecked")
 abstract class LettuceConfiguration extends ShiroRedisConfiguration {
 
     protected LettuceConfiguration(ShiroRedisProperties shiroRedisProperties) {
@@ -78,7 +77,7 @@ abstract class LettuceConfiguration extends ShiroRedisConfiguration {
         lettuceRedisClusterManager.setDatabase(getProperties().getDatabase());
         lettuceRedisClusterManager.setCount(getProperties().getCount());
         lettuceRedisClusterManager.setClusterClientOptions(getClusterClientOptions(lettuceRedisClusterManager));
-        lettuceRedisClusterManager.setGenericObjectPoolConfig((GenericObjectPoolConfig<StatefulRedisClusterConnection<byte[], byte[]>>) getPoolConfig());
+        lettuceRedisClusterManager.setGenericObjectPoolConfig(getPoolConfig());
         return lettuceRedisClusterManager;
     }
 
@@ -125,8 +124,8 @@ abstract class LettuceConfiguration extends ShiroRedisConfiguration {
         return clusterClientOptions;
     }
 
-    private GenericObjectPoolConfig<?> getPoolConfig() {
-        GenericObjectPoolConfig<?> genericObjectPoolConfig = new GenericObjectPoolConfig<>();
+    private <T extends StatefulConnection<?, ?>> GenericObjectPoolConfig<T> getPoolConfig() {
+        GenericObjectPoolConfig<T> genericObjectPoolConfig = new GenericObjectPoolConfig<>();
         applyPoolProperties(genericObjectPoolConfig, getProperties().getLettuce().getPool());
         return genericObjectPoolConfig;
     }
