@@ -6,6 +6,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.crazycake.shiro.IRedisManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisSessionDAO;
+import org.crazycake.shiro.cache.CaffeineCacheStrategy;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +44,7 @@ public class ShiroRedisAutoConfiguration extends ShiroRedisConfiguration {
         redisSessionDAO.setExpire((int) session.getExpire().getSeconds());
         redisSessionDAO.setSessionInMemoryEnabled(session.getSessionInMemoryEnabled());
         redisSessionDAO.setSessionInMemoryTimeout(session.getSessionInMemoryTimeout().toMillis());
+        redisSessionDAO.setCacheStrategy(new CaffeineCacheStrategy());
         return redisSessionDAO;
     }
 
